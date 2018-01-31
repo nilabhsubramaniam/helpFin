@@ -1,0 +1,105 @@
+<div class="row border-bottom" ng-controller="logInCtrl">
+    <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+
+        <ul class="nav navbar-top-links">
+            <!----Product--->
+            <li class ="navBar-top-link">
+                <a md-ink-ripple="" class=" waves-effect count-info" ui-sref="dashboards.product({'id':0,'limit': 20, 'offset': 0, 'page': 1, 'ordering': '-name'})" ng-click="close()">
+                    <md-button md-no-ink class="md-primary">
+                        <i class="fa fa-briefcase"></i> Product Configuration
+                    </md-button>
+
+                </a>
+            </li>
+            <!---type-->
+            <li class ="navBar-top-link">
+                <a md-ink-ripple="" class=" waves-effect count-info" ui-sref="dashboards.type({'id':0,'limit': 20, 'offset': 0, 'page': 1, 'ordering': '-name'})">
+                    <md-button md-no-ink class="md-primary">
+                        <i class="fa fa-thumb-tack"></i> Venue Classification
+                    </md-button>
+                </a>
+            </li>
+            <!---venue-->
+            <li class ="navBar-top-link">
+                <a md-ink-ripple="" class=" waves-effect count-info" ui-sref="dashboards.venue({'id':0,'limit': 20, 'offset': 0, 'page': 1})" ng-click="close()">
+                    <md-button md-no-ink class="md-primary">
+                        <i class="fa fa-map-marker"></i> Venues
+                    </md-button>
+                </a>
+            </li>
+            <li class="navbar-right">
+                Welcome <span ng-bind="username"></span>,
+                <a md-ink-ripple="" class=" waves-effect" ng-click="logout(true)">
+                    <md-button md-no-ink class="md-primary">
+                        <i class="fa fa-sign-out"></i> Log out
+                    </md-button>
+
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<!--&lt;!&ndash;<md-sidenav md-component-id="left" class="md-sidenav-left">&ndash;&gt;-->
+
+<!--<div ng-controller="logInCtrl" layout="column" ng-cloak="" class="inputErrorHeight">-->
+    <!--<md-sidenav md-component-id="left" class="md-sidenav-left" style="max-width:220px">-->
+        <!--&lt;!&ndash;Side nav content&ndash;&gt;-->
+        <!--<nav class="navbar-default navbar-static-side" role="navigation" style="background-color:#FFFFFF">-->
+            <!--<div class="sidebar-collapse">-->
+                <!--<ul side-navigation class="nav metismenu" id="side-menu">-->
+                    <!--<li class="nav-header">-->
+                        <!--<div class="profile-element" uib-dropdown>-->
+                            <!--<img alt="image" class="img-circle" src="/assets/images/logo.jpg"/>-->
+                        <!--</div>-->
+                    <!--</li>-->
+                    <!--&lt;!&ndash;Change the label name after use &ndash;&gt;-->
+                    <!--<li class="">-->
+                        <!--<a md-ink-ripple="" class=" waves-effect" ui-sref="dashboards.product({'id':0,'limit': 20, 'offset': 0, 'page': 1})"-->
+                           <!--ng-click="close()">-->
+                            <!--<i class="icon mdi-action-subject i-20"></i>-->
+                            <!--<span class="font-normal">Product</span>-->
+                        <!--</a>-->
+                    <!--</li>-->
+                    <!--&lt;!&ndash;Label 2&ndash;&gt;-->
+                    <!--<li class="">-->
+                        <!--<a md-ink-ripple="" class=" waves-effect" ui-sref="dashboards.type({'id':0,'limit': 20, 'offset': 0, 'page': 1})"-->
+                           <!--ng-click="close()">-->
+                            <!--<i class="icon mdi-action-subject i-20"></i>-->
+                            <!--<span class="font-normal">Type</span>-->
+                        <!--</a>-->
+                    <!--</li>-->
+                    <!--&lt;!&ndash;Label 3&ndash;&gt;-->
+                    <!--&lt;!&ndash;<li class="">&ndash;&gt;-->
+                        <!--&lt;!&ndash;<a md-ink-ripple="" class=" waves-effect" ui-sref="dashboards.rules" &ndash;&gt;-->
+                           <!--&lt;!&ndash;ng-click="close()">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<i class="icon mdi-action-subject i-20"></i>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<span class="font-normal">Rules</span>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</a>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</li>&ndash;&gt;-->
+                    <!--&lt;!&ndash;Label 4&ndash;&gt;-->
+                    <!--<li class="">-->
+                        <!--<a md-ink-ripple="" class=" waves-effect" ui-sref="dashboards.venue({'id':0,'limit': 20, 'offset': 0, 'page': 1})"-->
+                           <!--ng-click="close()">-->
+                            <!--<i class="icon mdi-action-subject i-20"></i>-->
+                            <!--<span class="font-normal">Venues</span>-->
+                        <!--</a>-->
+                    <!--</li>-->
+                <!--</ul>-->
+            <!--</div>-->
+        <!--</nav>-->
+        <!--&lt;!&ndash; End of side nav content&ndash;&gt;-->
+    <!--</md-sidenav>-->
+    <!--<md-content>-->
+        <!--<md-button>-->
+            <!--<i class="material-icons" style="font-size:34px" ng-click="openLeftMenu()">dehaze</i>-->
+        <!--</md-button>-->
+        <!--<ul class="nav navbar-top-links navbar-right" style="margin-right:0px">-->
+            <!--<li>-->
+                <!--<a md-ink-ripple="" class=" waves-effect" ng-click="logout()">-->
+                    <!--<i class="fa fa-sign-out"></i> Log out-->
+                <!--</a>-->
+            <!--</li>-->
+        <!--</ul>-->
+    <!--</md-content>-->
+<!--</div>-->

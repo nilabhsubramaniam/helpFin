@@ -1,0 +1,70 @@
+<!-- Modal Add/Edit Type-->
+<md-dialog style="width:80%;">
+    <form ng-cloak>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2 ng-if="isAddBtn">Add Rule</h2>
+                <h2 ng-if="!isAddBtn">Edit Rule</h2>
+                <span flex></span>
+                <md-button class="md-icon-button">
+                    <i class="material-icons" ng-click="cancel()">close</i>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <ng-form class="form-horizontal" role="form" name="ruleEditData">
+                <md-input-container class="md-block col-xs-offset-1 col-xs-11">
+                    <input name="place" type="text"
+                           md-maxlength="50"
+                           placeholder="choice"
+                           ng-model="formData.choices"
+                           required
+                    >
+                    <div ng-messages="ruleEditData.place.$error">
+                        <div ng-message="required">
+                            Venue Name is required
+                        </div>
+                        <div ng-message="md-maxlength">
+                            Answer does not exceed 50 characters
+                        </div>
+                    </div>
+                </md-input-container>
+                <md-input-container class="md-block col-xs-offset-1 col-xs-11">
+                    <input name="place" type="text"
+                           md-maxlength="50"
+                           placeholder="category-level"
+                           ng-model="formData.category_count"
+                           required
+                    >
+                    <div ng-messages="ruleEditData.place.$error">
+                        <div ng-message="required">
+                            Venue Name is required
+                        </div>
+                        <div ng-message="md-maxlength">
+                            Answer does not exceed 50 characters
+                        </div>
+                    </div>
+                </md-input-container>
+
+                <md-input-container class="md-block col-xs-offset-1 col-xs-11">
+                    <input name="landmark" type="text"
+                           md-maxlength="50"
+                           placeholder="status"
+                           ng-model="formData.status"
+                    >
+                    <div ng-messages="ruleEditData.landmark.$error">
+                        <div ng-message="md-maxlength">
+                            Answer does not exceed 50 characters
+                        </div>
+                    </div>
+                </md-input-container>
+                <div class="clearfix"></div>
+                <div style="text-align:center">
+                    <md-button class="md-raised md-primary" ng-disabled="ruleEditData.$invalid"
+                               ng-click="submitData()"> Submit
+                    </md-button>
+                </div>
+            </ng-form>
+        </md-dialog-content>
+    </form>
+</md-dialog>

@@ -1,0 +1,221 @@
+<!-- Modal Add/Edit Products-->
+<md-dialog style="width:50%;">
+  <form ng-cloak>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2 ng-if="isAddBtn">Add {{addTxt}}</h2>
+        <h2 ng-if="!isAddBtn">Edit {{addTxt}}</h2>
+        <span flex></span>
+        <md-button class="md-icon-button">
+           <i class="material-icons" ng-click="cancel()">close</i>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+        <ng-form class="form-horizontal" role="form" name="productEditData">
+            <md-input-container class="md-block col-xs-offset-1 col-xs-11" style="">
+              <input name="productText" type="text"
+                ng-if="pageNo == 0"
+                md-maxlength="50"
+                placeholder="{{placeholder}}"
+                ng-model="formData.name"
+                required
+              >
+              <input name="productText" type="text"
+                ng-if="pageNo == 1"
+                md-maxlength="50"
+                placeholder="{{placeholder}}"
+                ng-model="formData.q_text"
+                required
+              >
+              <input name="productText" type="text"
+                ng-if="pageNo == 2"
+                md-maxlength="50"
+                placeholder="{{placeholder}}"
+                ng-model="formData.choice_text"
+                required
+              >
+              <div ng-messages="productEditData.productText.$error">
+                <div ng-message="required">
+                    {{placeholder}} is required
+                </div>
+                <div ng-message="md-maxlength">
+                    Answer does not exceed 50 characters
+                </div>
+              </div>
+            </md-input-container>
+            <md-input-container class="md-block col-xs-offset-1 col-xs-11" style="" ng-if="pageNo == 0">
+                <md-select placeholder="Select Product Type" ng-model="formData.app_type" >
+                    <md-option ng-repeat = "type in prodType" ng-value="type.id">{{type.name}}</md-option>
+                </md-select>
+            </md-input-container>
+            <!-- Next question -->
+            <div class="col-xs-offset-1 col-xs-11" ng-if="pageNo == 2">
+                <h6>Select Next Question</h6>
+            </div>
+            <md-input-container class="md-block col-xs-offset-1 col-xs-11" ng-if="pageNo == 2">
+                <md-select placeholder="Select Next Question" ng-model="formData.next_question" ng-change="resetChoice()">
+                    <md-option ng-if="questions.length == 0" ng-value="">No questions available</md-option>
+                    <md-option ng-repeat="quest in questions" ng-if="quest.id != quest_id" ng-value="quest.id">{{quest.q_text}}</md-option>
+                </md-select>
+            </md-input-container>
+
+            <!--Select Choices -->
+            <div class="col-xs-offset-1 col-xs-11" ng-if="pageNo == 2">
+                <h6>Select Next Question Choices</h6>
+            </div>
+
+            <div ng-repeat="relation in formData.choicesArray track by $index" ng-if="pageNo == 2">
+              <md-input-container class="md-block col-xs-offset-1 col-xs-8">
+                <md-select placeholder="Select Choices" ng-model="relation.choiceId" ng-change="getChoiceId($index)">
+                    <md-option ng-if="cat_levels.length == 0" ng-value="">No Choices available</md-option>
+                    <md-option ng-repeat="choice in choices" ng-if="formData.next_question == choice.question" ng-value="choice.id">{{choice.choice_text}}</md-option>
+                </md-select>
+              </md-input-container>
+          
+              <md-input-container class="md-block col-xs-3">
+                <md-button class="md-icon-button" ng-if="formData.choicesArray.length == $index + 1">
+                    <i class="material-icons" ng-click="addChoice($index)">add_circle_outline</i>
+                </md-button>
+                <md-button class="md-icon-button" ng-if="$index != 0 || formData.choicesArray.length>1">
+                    <i class="material-icons" ng-click="removeChoice($index)">remove_circle_outline</i>
+                </md-button>
+              </md-input-container>
+            </div>
+
+            <md-input-container class="md-block col-xs-offset-1 col-xs-11" style="margin-top: 10px; font-weight: bold">
+              <div class="col-xs-9" style="padding-top: 10px;">
+                <span>Published ?</span>
+              </div>
+              <div class="col-xs-offset-1 col-xs-2">
+                <md-switch ng-model="formData.status" aria-label="Switch 2" ng-true-value="1"
+                           ng-false-value="0" class="md-warn" style="margin: 0">
+                </md-switch>
+              </div>
+            </md-input-container>
+
+            <md-input-container class="md-block col-xs-offset-1 col-xs-11" ng-if="pageNo == 1" style="margin-top: 20px; font-weight: bold">
+              <div class="col-xs-9" style="padding-top: 10px;">
+                <span>Do you want to select this question as first question ?</span>
+              </div>
+              <div class="col-xs-offset-1 col-xs-2">
+                <md-switch ng-model="formData.q_order" aria-label="Switch 2" ng-true-value="1"
+                           ng-false-value="0" class="md-warn" style="margin: 0">
+                </md-switch>
+              </div>
+              <br>
+              <div class="col-xs-12 red" ng-if="nextQuest" style="padding-top: 10px;">
+                Please delete all rules of this product to update question order
+              </div>
+            </md-input-container>
+
+            <!-- <md-input-container class="md-block col-xs-offset-1 col-xs-11" ng-if="pageNo == 1">
+                <input name="productOrder" type="text"
+                       md-maxlength="50"
+                       placeholder="Order"
+                       ng-model="formData.q_order"
+                       required
+                >
+                <div ng-messages="productEditData.productOrder.$error">
+                    <div ng-message="required">
+                        Order is required
+                    </div>
+                    <div ng-message="orderQ">
+                        Order number already exists
+                    </div>
+                    <div ng-message="md-maxlength">
+                        Answer does not exceed 50 characters
+                    </div>
+                </div>
+            </md-input-container> -->
+            <div style="text-align:center">
+                <md-button class="md-raised md-primary" ng-disabled="productEditData.$invalid"
+                           ng-click="submitData()">
+                    Submit
+                </md-button>
+            </div>
+          </ng-form>
+    </md-dialog-content>
+  </form>
+</md-dialog>
+
+<!-- <ng-form class="form-horizontal" role="form" name="productEditData">
+            <md-toolbar>
+              <div class="md-toolbar-tools">
+                <h2 ng-if="isAddBtn">Add {{addTxt}}</h2>
+                <h2 ng-if="!isAddBtn">Edit {{addTxt}}</h2>
+                <span flex></span>
+                <md-button class="md-icon-button">
+                   <i class="material-icons" ng-click="cancel()">close</i>
+                </md-button>
+              </div>
+            </md-toolbar>
+            <md-input-container class="md-block col-xs-offset-1 col-xs-11">
+                <input name="productText" type="text"
+                       ng-if="pageNo == 0"
+                       md-maxlength="50"
+                       placeholder="{{placeholder}}"
+                       ng-model="formData.name"
+                       required
+                >
+                <input name="productText" type="text"
+                       ng-if="pageNo == 1"
+                       md-maxlength="50"
+                       placeholder="{{placeholder}}"
+                       ng-model="formData.q_text"
+                       required
+                >
+                <input name="productText" type="text"
+                       ng-if="pageNo == 2"
+                       md-maxlength="50"
+                       placeholder="{{placeholder}}"
+                       ng-model="formData.choice_text"
+                       required
+                >
+                <div ng-messages="productEditData.productText.$error">
+                    <div ng-message="required">
+                        {{placeholder}} is required
+                    </div>
+                    <div ng-message="md-maxlength">
+                        Answer does not exceed 50 characters
+                    </div>
+                </div>
+            </md-input-container>
+            <md-input-container class="md-block col-xs-offset-1 col-xs-11" ng-if="pageNo == 1 || pageNo == 2">
+              <div class="col-xs-5">
+                <label>Is it is still active ?</label>
+              </div>
+              <div class="col-xs-offset-1 col-xs-6">
+                <md-switch ng-model="formData.status" aria-label="Switch 2" ng-true-value="1"
+                           ng-false-value="0" class="md-warn" style="left:118px;top:-19px">
+                    Active: {{formData.status }}
+                </md-switch>
+              </div>
+            </md-input-container>
+            <md-input-container class="md-block col-xs-offset-1 col-xs-11" ng-if="pageNo == 1">
+                <input name="productOrder" type="text"
+                       md-maxlength="50"
+                       placeholder="Order"
+                       ng-model="formData.q_order"
+                       required check-directive
+                >
+                <div ng-messages="productEditData.productOrder.$error">
+                    <div ng-message="required">
+                        Order is required
+                    </div>
+                    <div ng-message="orderQ">
+                        Order number already exists
+                    </div>
+                    <div ng-message="md-maxlength">
+                        Answer does not exceed 50 characters
+                    </div>
+                </div>
+            </md-input-container>
+            <div style="text-align:center">
+                <md-button class="md-raised md-primary" ng-disabled="productEditData.$invalid"
+                           ng-click="submitData()">
+                    Submit
+                </md-button>
+            </div>
+        </ng-form> -->

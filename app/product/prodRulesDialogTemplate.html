@@ -1,0 +1,167 @@
+<!-- Modal Add/Edit Type-->
+<md-dialog style="width:80%;">
+    <form ng-cloak>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2 ng-if="isAddBtn">Add Rule</h2>
+                <h2 ng-if="!isAddBtn">Edit Rule</h2>
+                <span flex></span>
+                <md-button class="md-icon-button">
+                    <i class="material-icons" ng-click="cancel()">close</i>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <ng-form class="form-horizontal" role="form" name="ruleEditData">
+
+              <md-input-container class="md-block col-xs-12" style="margin-top: 40px; margin-left:10px;">
+                  <input name="personaText" type="text"
+                         placeholder="Persona text"
+                         ng-model="formData.persona"
+                         required
+                  >
+                  <div ng-messages="ruleEditData.personaText.$error">
+                      <div ng-message="required">
+                          Persona Text required
+                      </div>
+                  </div>
+              </md-input-container>
+            
+              <div class="col-xs-12">
+                  <h6>Select Question and Choice</h6>
+                  <span ng-if="noFirstQuestAvailable" class="red">Please mark first question of this product and then proceed.</span>
+              </div>
+              <div ng-repeat="choice in formData.choicesArray track by $index">
+                  <!-- Select Question -->
+                  <md-input-container class="md-block col-xs-5">
+                    <md-select placeholder="Select Question" ng-model="choice.selectedQuest" disabled ng-change="reset($index, 1)">
+                        <md-option ng-if="questions.length == 0" ng-value="">No questions available</md-option>
+                        <md-option ng-repeat="quest in questions" ng-value="quest.id"><span style="color:black;">{{quest.q_text}}</span></md-option>
+                    </md-select>
+                  </md-input-container>
+
+                  <!-- Select Choice -->
+                  <md-input-container class="md-block col-xs-5">
+                    <md-select placeholder="Select Choice" ng-model="choice.selectedChoice"
+                               ng-change="getChoiceCatId($index, 1); addSelectChoice($index,1)" ng-disabled="!!!choice.selectedQuest">
+                        <md-option ng-if="choices.length == 0" ng-value="">No choices available
+                        </md-option>
+                        <md-option ng-repeat="choiceData in choicesRelationData" ng-if="choice.selectedQuest == choiceData.question" ng-value="choiceData.id">{{choiceData.choice_text}}
+                        </md-option>
+                    </md-select>
+                  </md-input-container>
+                  <!-- <md-input-container class="md-block col-xs-2">
+                    <md-button class="md-icon-button" ng-if="formData.choicesArray.length == $index + 1">
+                        <i class="material-icons" ng-click="addSelectChoice($index,1)">add_circle_outline</i>
+                    </md-button>
+                    <md-button class="md-icon-button" ng-if="$index != 0 && formData.choicesArray.length == $index+1">
+                        <i class="material-icons" ng-click="removeSelectChoice($index,1)">remove_circle_outline</i>
+                    </md-button>
+                  </md-input-container> -->
+                </div>
+                <!-- Select Category Level and Venue count -->
+                <div class="col-xs-12">
+                    <h6>Select Category level  and add total number of Venues</h6>
+                </div>
+
+                <div ng-repeat="cat_id_venue in formData.category_levels track by $index">
+                  <!-- Type -->
+                  <md-input-container class="md-block col-xs-3">
+                    <md-select placeholder="Select Type" ng-model="cat_id_venue.type_id" ng-change="reset($index, 0, 1)">
+                        <md-option ng-if="types.length == 0" ng-value="">No Types available</md-option>
+                        <md-option ng-repeat="type in types" ng-value="type.id">{{type.name}}</md-option>
+                    </md-select>
+                  </md-input-container>
+                  <!-- Category -->
+                  <md-input-container class="md-block col-xs-3">
+                    <md-select placeholder="Select Category" ng-model="cat_id_venue.category_id" ng-change="reset($index, 0, 0)" ng-disabled="!!!cat_id_venue.type_id">
+                        <md-option ng-if="categories.length == 0" ng-value="">No Categories available</md-option>
+                        <md-option ng-repeat="category in categories" ng-value="category.id" ng-if = "cat_id_venue.type_id == category.type">{{category.name}}</md-option>
+                    </md-select>
+                  </md-input-container>
+                  <!-- Category Level -->
+                  <md-input-container class="md-block col-xs-2">
+                    <md-select placeholder="Select Category Level" ng-model="cat_id_venue.cat_level_id" ng-change="getChoiceCatId($index, 0)" ng-disabled="!!!cat_id_venue.category_id">
+                        <md-option ng-if="cat_levels.length == 0" ng-value="">No Levels available</md-option>
+                        <md-option ng-repeat="level in cat_levels" ng-value="level.id" ng-if = "cat_id_venue.category_id == level.category">{{level.value}}</md-option>
+                    </md-select>
+                  </md-input-container>
+                  <md-input-container class="md-block col-xs-2">
+                      <input name="venueCount" type="text"
+                             placeholder="Venue Count"
+                             ng-model="cat_id_venue.venue_count"
+                             ng-disabled="!!!cat_id_venue.cat_level_id"
+                             required
+                      >
+                      <div ng-messages="ruleEditData.venueCount.$error">
+                          <div ng-message="required">
+                              Total number of venues required
+                          </div>
+                      </div>
+                  </md-input-container>
+                  <md-input-container class="md-block col-xs-2">
+                    <md-button class="md-icon-button" ng-if="formData.category_levels.length == $index + 1">
+                        <i class="material-icons" ng-click="addSelectChoice($index, 0)">add_circle_outline</i>
+                    </md-button>
+                    <md-button class="md-icon-button" ng-if="$index != 0 || formData.category_levels.length>1">
+                        <i class="material-icons" ng-click="removeSelectChoice($index, 0)">remove_circle_outline</i>
+                    </md-button>
+                  </md-input-container>
+                </div>
+                <md-input-container class="md-block col-xs-12" style="margin-top: 10px; font-weight: bold">
+                  <div class="col-xs-9" style="padding-top: 10px;">
+                    <span>Is it is still active ?</span>
+                  </div>
+                  <div class="col-xs-offset-1 col-xs-2">
+                    <md-switch ng-model="formData.status" aria-label="Switch 2" ng-true-value="1"
+                               ng-false-value="0" class="md-warn" style="margin: 0">
+                    </md-switch>
+                  </div>
+                </md-input-container>
+
+                <!-- <div ng-repeat="(key, val) in formData.category_level track by $index">
+                    <p>{{key}}:{{val}}</p>
+                    <md-input-container class="md-block col-xs-5">
+                      <md-select placeholder="Select Category Level" ng-model="key" ng-change="reset($index)">
+                          <md-option ng-if="cat_levels.length == 0" ng-value="">No questions available</md-option>
+                          <md-option ng-repeat="level in cat_levels" ng-value="level.id">{{level.description}}</md-option>
+                      </md-select>
+                    </md-input-container>
+                    <md-input-container class="md-block col-xs-offset-1 col-xs-5">
+                        <input name="venueCount" type="text"
+                               md-maxlength="50"
+                               placeholder="Venue Count"
+                               ng-model="val"
+                               required
+                        >
+                        <div ng-messages="ruleEditData.venueCount.$error">
+                            <div ng-message="required">
+                                Total number of venues required
+                            </div>
+                            <div ng-message="md-maxlength">
+                                Answer does not exceed 50 characters
+                            </div>
+                        </div>
+                    </md-input-container>
+
+                    <md-input-container class="md-block col-xs-2">
+                      <md-button class="md-icon-button" ng-if="cat_level_length == $index + 1">
+                          <i class="material-icons" ng-click="addSelectChoice($index)">add_circle_outline</i>
+                      </md-button>
+                      <md-button class="md-icon-button" ng-if="$index != 0 || cat_level_length>1">
+                          <i class="material-icons" ng-click="removeSelectChoice($index)">remove_circle_outline</i>
+                      </md-button>
+                    </md-input-container>
+
+                </div> -->
+
+                <div class="clearfix"></div>
+                <div style="text-align:center">
+                    <md-button class="md-raised md-primary" ng-disabled="ruleEditData.$invalid"
+                               ng-click="submitData()"> Submit
+                    </md-button>
+                </div>
+            </ng-form>
+        </md-dialog-content>
+    </form>
+</md-dialog>

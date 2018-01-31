@@ -1,0 +1,66 @@
+<!-- Modal Add/Edit Type-->
+<md-dialog style="width:60%;">
+  <form ng-cloak>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2 ng-if="isAddBtn">Add {{addTxt}}</h2>
+        <h2 ng-if="!isAddBtn">Edit {{addTxt}}</h2>
+        <span flex></span>
+        <md-button class="md-icon-button">
+           <i class="material-icons" ng-click="cancel()">close</i>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+        <ng-form class="form-horizontal" role="form" name="typeEditData">
+            <md-input-container class="md-block col-xs-offset-1 col-xs-11">
+                <input name="typeText" type="text" ng-if="pageNo == 0 || pageNo == 1"
+                    md-maxlength="50"
+                    placeholder="{{placeholder}}"
+                    ng-model="formData.name"
+                    required
+                  >
+                <input name="typeText" type="text"
+                    ng-if="pageNo == 2"
+                    md-maxlength="50"
+                    placeholder="Description"
+                    ng-model="formData.description"
+                    required
+                  >
+                  <div ng-messages="typeEditData.typeText.$error">
+                        <div ng-message="required">
+                            {{placeholder}} is required
+                        </div>
+                        <div ng-message="md-maxlength">
+                            Answer does not exceed 50 characters
+                        </div>
+                  </div>
+              </md-input-container>
+              <md-input-container class="md-block col-xs-offset-1 col-xs-11" ng-if="pageNo == 2">
+                  <input name="typeOrder" type="text"
+                        md-maxlength="2"
+                        placeholder="Interval"
+                        ng-model="formData.value"
+                        ng-pattern="/^[0-9]$|^10$/"
+                        required
+                  >
+                  <div ng-messages="typeEditData.typeOrder.$error">
+                      <div ng-message="required">
+                          Interval is required
+                      </div>
+                      <div ng-message="pattern || md-maxlength">
+                          Value should be less than or equal to 10
+                      </div>
+                  </div>
+              </md-input-container>
+              <div style="text-align:center">
+                  <md-button class="md-raised md-primary" ng-disabled="typeEditData.$invalid"
+                             ng-click="submitData()">
+                      Submit
+                  </md-button>
+              </div>
+          </ng-form>
+    </md-dialog-content>
+  </form>
+</md-dialog>

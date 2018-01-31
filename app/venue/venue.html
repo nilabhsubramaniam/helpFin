@@ -1,0 +1,107 @@
+<form class="form-horizontal" role="form" name="productQuestionsList" id="productQuestionsListData">
+    <div ng-show="showTable">
+        <md-toolbar class="md-table-toolbar md-default" ng-hide="ifVenueExtraClicked">
+            <div class="md-toolbar-tools">
+                <span ng-if="!isAddBtn" class="PageHeader">Venues</span>
+                <h2 ng-if="isAddBtn">Add Venue</h2>
+                <span flex></span>
+                <md-button class="md-icon-button">
+                    <md-tooltip md-direction="bottom">Add {{tooltipTxt}}</md-tooltip>
+                    <i class="material-icons" ng-click="addEditVenue(0)">add</i>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <div ng-hide="ifVenueExtraClicked">
+            <p style="margin-top:15px">Loading <select ng-model="viewData"
+                       ng-options="item for item in pageNumbers"
+                       ng-hide="ifVenueExtraClicked"
+                       ng-change="setLimit()">
+            </select> records at a time. Displaying <span class="page-define">{{fromFirstRow}}<span
+                        ng-if="fromFirstRow !=toLastrow">-{{toLastrow}}</span></span> records out of <span
+                        class="page-define"> {{bigTotalItems}} </span> total records.</span></p>
+        </div>
+        <md-content layout="column" flex ng-hide="ifVenueExtraClicked">
+            <md-toolbar class="md-table-toolbar alternate">
+                <md-table-container>
+                    <table data-md-table>
+                        <thead md-head>
+                        <tr md-row>
+                            <th md-column class="col-xs-2">
+                                <span style="color:white">
+                                    Name <span class="sortorder" ng-click="sortBy('name')" ng-class="{reverse: nameReverse}"></span>
+                                </span>
+                            </th>
+                            <th md-column class="col-xs-2">
+                                <span style="color:white">
+                                    City <span class="sortorder" ng-click="sortBy('city')" ng-class="{reverse: cityReverse}"></span>
+                                </span>
+                            </th>
+                            <th md-column class="col-xs-2">
+                                <span style="color:white">
+                                    Status <span class="sortorder" ng-click="sortBy('status')" ng-class="{reverse: statusReverse}"></span>
+                                </span>
+                            </th>
+                            <th md-column class="col-xs-2">
+                                <span style="color:white">
+                                    Primary Contact <span class="sortorder" ng-click="sortBy('primary_contact')" ng-class="{reverse: primaryContactReverse}"></span>
+                                </span>
+                            </th>
+                            <th md-column class="col-xs-3" style="text-align:center">
+                                <span style="color:white">
+                                    Action
+                                </span>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody md-body style="background-color:#ffffff">
+                        <tr md-row ng-if="venues.length == 0">
+                            <td md-cell><b>No venue available</b></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr md-row data-ng-repeat="venue in venues">
+                            <td md-cell class="col-xs-2">{{venue.name}}</td>
+                            <td md-cell class="col-xs-2">{{venue.city}}</td>
+                            <td md-cell class="col-xs-3">
+                                <span class="green" ng-if="product.status">Active</span>
+                                <span class="red" ng-if="!product.status">Inactive</span>
+                            </td>
+                            <td md-cell class="col-xs-2">{{venue.primary_contact}}</td>
+                            <td md-cell class="col-xs-3" style="text-align:center">
+                                <a>
+                                    <span>
+                                        <md-button class="md-icon-button">
+                                            <md-tooltip md-direction="bottom">Edit venue</md-tooltip>
+                                           <i class="material-icons"
+                                              ng-click="addEditVenue(1, venue.venueextra.venue)">mode_edit</i>
+                                        </md-button>
+                                    </span>
+                                </a>
+                                <a>
+                                    <span>
+                                        <md-button class="md-icon-button" style="color:red">
+                                            <md-tooltip md-direction="bottom">Delete</md-tooltip>
+                                           <i class="material-icons" ng-click="showConfirm($event, 0,venue.venueextra.venue)">delete</i>
+                                        </md-button>
+                                    </span>
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </md-table-container>
+    </div>
+    <!--pagination -->
+    <div style="text-align:right" ng-show="isTableLoading == false" ng-hide="ifVenueExtraClicked">
+        <div uib-pagination
+             total-items="bigTotalItems"
+             ng-model="currentPage" class="pagination-sm"
+             max-size="maxSize" boundary-links="true"
+             rotate="false" num-pages="numPages"
+             ng-click="pageChanged();changePage()"
+             items-per-page="itemsPerPage">
+        </div>
+    </div>
+</form>

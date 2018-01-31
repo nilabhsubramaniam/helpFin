@@ -1,0 +1,330 @@
+<form class="form-horizontal" role="form" name="productQuestionsList" id="productQuestionsListData">
+    <div>
+        <md-toolbar class="md-table-toolbar md-default">
+            <div class="md-toolbar-tools">
+                <span class="PageHeader">{{headerTxt}}</span>
+                <span flex></span>
+                <!-- <span ng-if="pageNo != 0" ng-click="back(pageNo-1)">Back</span> -->
+                <md-button class="md-icon-button" ng-if="pageNo != 0">
+                    <md-tooltip md-direction="bottom">Back</md-tooltip>
+                    <i class="material-icons" ng-if="pageNo != 3" ng-click="back(pageNo-1)">arrow_back</i>
+                    <i class="material-icons" ng-if="pageNo == 3" ng-click="back(0)">arrow_back</i>
+                </md-button>
+
+                <md-button class="md-icon-button">
+                    <md-tooltip md-direction="bottom">Add {{tooltipTxt}}</md-tooltip>
+                    <i class="material-icons" ng-if="pageNo != 3" ng-click="showAdvanced($event, 1)">add</i>
+                    <i class="material-icons" ng-if="pageNo == 3" ng-click="showAdvancedRules($event, 1)">add</i>
+                </md-button>
+            </div>
+        </md-toolbar>
+            <p style="margin-top:15px">Loading <select name="select" ng-options="item for item in pageNumbers" ng-model ="viewData" ng-change="setLimit()">
+            </select> records at a time. Displaying <span class="page-define">{{fromFirstRow}}<span ng-if="fromFirstRow !=toLastrow">-{{toLastrow}}</span></span> records out of <span class="page-define"> {{bigTotalItems}} </span> total records.</span>  </p>
+        <md-content layout="column" flex ng-if="pageNo != 3">
+            <md-toolbar class="md-table-toolbar alternate">
+                <md-table-container>
+                    <table data-md-table>
+                        <thead md-head>
+                        <span> </span>
+                        <tr md-row>
+                            <th md-column ng-if="pageNo == 0" class="col-sm-3">
+                                    <span style="color:white">
+                                    Product  <span class="sortorder" ng-click="sortBy('name')" ng-class="{reverse: reverse}"></span>
+                                    </span>
+                            </th>
+
+                            <th md-column ng-if="pageNo == 1" class="col-sm-6">
+                                <span style="color:white">
+                                    Question <span class="sortorder" ng-click="sortBy('q_text')" ng-class="{reverse: reverse}"></span>
+                                </span>
+                            </th>
+                            <th md-column ng-if="pageNo == 2" class="col-sm-7">
+                                <span style="color:white">
+                                    Choice <span class="sortorder" ng-click="sortBy('choice_text')" ng-class="{reverse: reverse}"></span>
+                                </span>
+                            </th>
+                            <th md-column class="col-sm-2">
+                                <span style="color:white">
+                                    Status <span class="sortorder"  ng-click="sortBy('status')" ng-class="{reverse: reverse}"></span>
+                                </span>
+                            </th>
+                            <th md-column ng-if="pageNo == 0" class="col-sm-2" style="text-align:center">
+                                    <span style="color:white;">
+                                    Type  <span class="sortorder"  ng-click="sortBy('app_type')" ng-class="{reverse: reverse}"></span>
+                                    </span>
+                            </th>
+
+                            <th md-column data-md-numeric class="col-sm-1" ng-if="pageNo == 0">
+
+                              <span style="color:white">
+                                    Questions
+                                </span>
+                            </th>
+
+                            <th md-column data-md-numeric class="col-sm-1" ng-if="pageNo == 0">
+                                <span style="color:white">
+                                    Rules
+                                </span>
+                            </th>
+
+                            <th md-column data-md-numeric class="col-sm-1" ng-if="pageNo == 1">
+                                <span style="color:white">
+                                    Choices
+                                </span>
+                            </th>
+
+                            <th md-column class="col-sm-3" ng-if="pageNo != 3" style="text-align:center">
+                                <span style="color:white">Action</span>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody md-body style="background-color:#ffffff">
+                        <tr md-row ng-if="tableData.count == 0">
+                            <td md-cell><b>No data available</b></td>
+                            <td></td>
+                            <td ng-if="pageNo == 0 || pageNo == 1"></td>
+                            <td ng-if="pageNo == 0"></td>
+                            <td ng-if="pageNo == 0"></td>
+                            <td></td>
+                        </tr>
+
+                        
+
+                        <tr md-row ng-if="tableData.count != 0">
+                            <td md-cell class="col-xs-3">
+                                <md-input-container class="md-block" ng-keyup="$event.keyCode == 13 ? filterData() : null">
+                                  <input name="nameSearch" type="text"
+                                    placeholder="Search"
+                                    ng-model="search.name"
+                                    required
+                                  >
+                                  </md-input-container>
+                            </td>
+                            <td md-cell class="col-xs-2">
+                                <md-input-container class="md-block">
+                                  <md-select placeholder="Search Status" ng-model="search.status" ng-change="filterData()">
+                                      <md-option ng-value="">All</md-option>
+                                      <md-option ng-value="1">Active</md-option>
+                                      <md-option ng-value="0">Inactive</md-option>
+                                  </md-select>
+                                  </md-input-container>
+                            </td>
+                            <td ng-if="pageNo == 0" md-cell class="col-xs-2">
+                                <md-input-container class="md-block">
+                                  <md-select placeholder="Search App Type" ng-model="search.app_type" ng-change="filterData()">
+                                      <md-option ng-value="">All</md-option>
+                                      <md-option ng-value="1">Woogee</md-option>
+                                      <md-option ng-value="2">Deli</md-option>
+                                  </md-select>
+                                  </md-input-container>
+                            </td>
+                            <td ng-if="pageNo == 0 || pageNo == 1" md-cell class="col-sm-1"></td>
+                            <td md-cell ng-if="pageNo == 0" class="col-sm-1"></td>
+                            <td md-cell class="col-sm-2">
+                                <a>
+                                    <span>
+                                        <md-button class="md-icon-button">
+                                            <md-tooltip md-direction="bottom">Search</md-tooltip>
+                                           <i class="material-icons" ng-click="filterData()">search</i>
+                                        </md-button>
+                                    </span>
+                                </a>
+                                <a>
+                                    <span>
+                                        <md-button class="md-icon-button">
+                                            <md-tooltip md-direction="bottom">Reset</md-tooltip>
+                                           <i class="material-icons" ng-click="resetFilter()">autorenew</i>
+                                        </md-button>
+                                    </span>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr md-row data-ng-repeat="product in tableData.results">
+                            <td md-cell ng-if="pageNo == 0" class="col-sm-3">{{product.name}}</td>
+                            
+
+                            <td md-cell ng-if="pageNo == 1" class="col-sm-6">{{product.q_text}}</td>
+                            <td md-cell ng-if="pageNo == 2" class="col-sm-7">{{product.choice_text}}</td>
+                            <td md-cell class="col-sm-2">
+                                <span class="green" ng-if="product.status">Active</span>
+                                <span class="red" ng-if="!product.status">Inactive</span>
+                            </td>
+                            <td md-cell ng-if="pageNo == 0 && product.app_type == 1" class="col-sm-2" style="text-align:center">Woogee</td>
+                            <td md-cell ng-if="pageNo == 0 && product.app_type == 2" class="col-sm-2" style="text-align:center">Deli</td>
+                            <td md-cell ng-if="pageNo == 0" class="col-sm-1" style="text-align:center">{{product.get_question_count}}</td>
+                            <td md-cell ng-if="pageNo == 0" class="col-sm-1" style="text-align:center">{{product.get_rule_count}}</td>
+                            <td md-cell ng-if="pageNo == 1" class="col-sm-1" style="text-align:center">{{product.get_choice_count}}</td>
+                            <td md-cell class="col-sm-3" ng-if="pageNo != 5" style="text-align:center">
+                                <a>
+                                    <span>
+                                        <md-button class="md-icon-button">
+                                            <md-tooltip md-direction="bottom">Edit {{tooltipTxt}}</md-tooltip>
+                                           <i class="material-icons" ng-click="showAdvanced($event, 0, product)">mode_edit</i>
+                                        </md-button>
+                                    </span>
+                                </a>
+                                <span>
+                                    <a>
+                                        <md-button class="md-icon-button " style="color:red">
+                                            <md-tooltip md-direction="bottom">Delete {{tooltipTxt}}</md-tooltip>
+                                           <i class="material-icons" ng-click="showConfirm($event, product.id)">delete</i>
+                                        </md-button>
+                                    </a>
+                                </span>
+                                <span ng-if="pageNo == 0">
+                                    <a>
+                                        <md-button class="md-icon-button " >
+                                             <md-tooltip md-direction="bottom">Question</md-tooltip>
+                                           <i class="material-icons" ng-click="updatePageData(product.id,1, product.name, product.first_question_available)">question_answer</i>
+                                        </md-button>
+                                    </a>
+                                </span>
+                                <span ng-if="pageNo == 0">
+                                    <a>
+                                        <md-button class="md-icon-button ">
+                                             <md-tooltip md-direction="bottom">Persona</md-tooltip>
+                                           <i class="material-icons" ng-click="productRulesData(product.id,3, product.name, product.get_question_count)">perm_identity</i>
+                                        </md-button>
+                                    </a>
+                                </span>
+                                <!--<md-menu>-->
+                                               <!--<span>-->
+                                            <!--<md-button class="md-icon-button">-->
+                                               <!--<i class="material-icons" ng-click="$mdOpenMenu($event)">more_vert</i>-->
+                                            <!--</md-button>-->
+                                            <!--</span>-->
+                                             <!--<md-menu-content width="2">-->
+                                                 <!--<md-menu-item>-->
+                                                    <!--<md-button ng-click="updatePageData(product.id,1, product.name)">-->
+                                                        <!--<div layout="row">-->
+                                                            <!--<p flex>Question</p>-->
+                                                         <!--</div>-->
+                                                    <!--</md-button>-->
+                                                <!--</md-menu-item>-->
+                                                 <!--<md-menu-item>-->
+                                                    <!--<md-button ng-click="productRulesData(product.id,3, product.name)">-->
+                                                        <!--<div layout="row">-->
+                                                            <!--<p flex>Rules</p>-->
+                                                         <!--</div>-->
+                                                    <!--</md-button>-->
+                                                <!--</md-menu-item>-->
+                                             <!--</md-menu-content>-->
+                                        <!--</md-menu>-->
+
+                                <span ng-if="pageNo == 1">
+                                    <a>
+                                        <md-button class="md-icon-button ">
+                                             <md-tooltip md-direction="bottom">Choices</md-tooltip>
+                                           <i class="material-icons" ng-click="updatePageData(product.id,2, product.q_text)">keyboard_capslock</i>
+                                        </md-button>
+                                    </a>
+                                </span>
+                            </td>
+
+                            <!--<td md-cell ng-click="editComment($event, product)"-->
+                            <!--ng-class="{'md-placeholder': !product.comment}">-->
+                            <!--{{product.comment || 'Add a comment'}}-->
+                            <!--</td>-->
+                        </tr>
+                        </tbody>
+                    </table>
+                </md-table-container>
+    </div>
+    
+    <!-- Product rule-->
+    <md-content ng-if="pageNo == 3">
+        <md-toolbar class="md-table-toolbar alternate">
+            <md-table-container>
+                <table data-md-table>
+                    <thead md-head>
+                    <tr md-row>
+                        <th md-column class="col-xs-7"><span style="color:white">Persona Text</span></th>
+                        <th md-column class="col-sm-2">
+                            <span style="color:white">
+                                Status <span class="sortorder" ng-click="sortBy('status')" ng-class="{reverse: reverse}"></span></span>
+                            </span>
+                        </th>
+                        <th md-column class="col-xs-3">
+                            <span style="color:white">Action</span>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody md-body style="background-color:#ffffff">
+                    <tr md-row ng-if="productRuleData.length == 0">
+                        <td md-cell><b>No rules available</b></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr md-row ng-if="productRuleData.length != 0">
+                        <td md-column class="col-xs-7"></td>
+                        <td md-cell class="col-xs-2">
+                            <md-input-container class="md-block" style="margin-top: 20px;">
+                              <md-select placeholder="Search Status" ng-model="search.status" ng-change="filterData()">
+                                  <md-option ng-value=""></md-option>
+                                  <md-option ng-value="1">Active</md-option>
+                                  <md-option ng-value="0">Inactive</md-option>
+                              </md-select>
+                              </md-input-container>
+                        </td>
+                        <td md-cell class="col-sm-3">
+                            <a>
+                                <span>
+                                    <md-button class="md-icon-button">
+                                        <md-tooltip md-direction="bottom">Search</md-tooltip>
+                                       <i class="material-icons" ng-click="filterData()">search</i>
+                                    </md-button>
+                                </span>
+                            </a>
+                            <a>
+                                <span>
+                                    <md-button class="md-icon-button">
+                                        <md-tooltip md-direction="bottom">Reset</md-tooltip>
+                                       <i class="material-icons" ng-click="resetFilter()">autorenew</i>
+                                    </md-button>
+                                </span>
+                            </a>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr md-row data-ng-repeat="rule in rules track by $index">
+                        <td md-cell class="col-xs-7">{{rule.persona}}</td>
+                        <td md-cell class="col-sm-2">
+                            <span class="green" ng-if="rule.status">Active</span>
+                            <span class="red" ng-if="!rule.status">Inactive</span>
+                        </td>
+                        <td md-cell class="col-sm-3">
+                            <a>
+                                <span>
+                                    <md-button class="md-icon-button">
+                                        <md-tooltip md-direction="bottom">Edit Rule</md-tooltip>
+                                       <i class="material-icons" ng-click="showAdvancedRules($event, 0, rule)">mode_edit</i>
+                                    </md-button>
+                                </span>
+                            </a>
+                            <span>
+                                <a>
+                                    <md-button class="md-icon-button" style="color:red">
+                                        <md-tooltip md-direction="bottom">Delete Rule</md-tooltip>
+                                       <i class="material-icons" ng-click="showConfirmRule($event, rule.id)">delete</i>
+                                    </md-button>
+                                </a>
+                            </span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </md-table-container>
+    </md-content>
+    <div style="text-align:right" ng-show="isTableLoading == false">
+        <div uib-pagination
+             total-items="bigTotalItems"
+             ng-model="currentPage"  class="pagination-sm"
+             max-size="maxSize"  boundary-links="true"
+             rotate="false"  num-pages="numPages"
+             ng-change="pageChanged();changePage()"
+             items-per-page="itemsPerPage" >
+        </div>
+    </div>
+</form>
+
+

@@ -1,0 +1,155 @@
+<form class="form-horizontal" role="form" name="typeQuestionsList">
+    <div>
+        <md-toolbar class="md-table-toolbar md-default">
+            <div class="md-toolbar-tools">
+                <span class="PageHeader">{{headerTxt}}</span>
+                <span flex></span>
+                <!-- <span ng-if="pageNo != 0" ng-click="back(pageNo-1)">Back</span> -->
+                <md-button class="md-icon-button" ng-if="pageNo != 0">
+                    <i class="material-icons" ng-click="back(pageNo-1)">arrow_back</i>
+                </md-button>
+                <md-button class="md-icon-button">
+                    <!--<i class="material-icons">exposure_plus_1</i>-->
+                    <!-- <i class="material-icons" ng-click="add()">add</i> -->
+                    <i class="material-icons" ng-click="showAdvanced($event, 1)">add</i>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <p style="margin-top:15px">Loading <select ng-model ="viewData" ng-options="item for item in pageNumbers" ng-change="setLimit()">
+        </select> records at a time. Displaying <span class="page-define">{{fromFirstRow}}<span ng-if="fromFirstRow !=toLastrow">-{{toLastrow}}</span></span> records out of <span class="page-define"> {{bigTotalItems}} </span> total records.</span>  </p>
+        <md-content layout="column" flex>
+            <md-toolbar class="md-table-toolbar alternate">
+                <md-table-container>
+                    <table data-md-table>
+                        <thead md-head>
+                        <tr md-row>
+                            <th md-column ng-if="pageNo == 0 || pageNo == 1" class="col-sm-9">
+                                <span style="color:white">
+                                    Description <span class="sortorder" ng-click="sortBy('name')" ng-class="{reverse: reverse}"></span>
+                                </span>
+                            </th>
+                            <th md-column data-md-numeric ng-if="pageNo == 2" class="col-sm-1">
+                                <span style="color:white">
+                                    Interval
+                                </span>
+                            </th>
+                            <th md-column ng-if="pageNo == 2" class="col-sm-8" style="color:white">
+                                <span style="color:white">
+                                    Description <span class="sortorder" ng-click="sortBy('description')" ng-class="{reverse: reverse}"></span>
+                                </span>
+                            </th>
+
+                            <th md-column class="col-sm-2" style="text-align:center">
+                                <span style="color:white">Action</span>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody md-body style="background-color:#ffffff">
+                        <tr md-row ng-if="tableData.count == 0">
+                            <td md-cell><b>No data available</b></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr md-row data-ng-repeat="type in tableData.results">
+                            <td md-cell ng-if="pageNo == 0 || pageNo == 1" class="col-sm-9">{{type.name}}</td>
+                            <td md-cell ng-if="pageNo == 2" class="col-sm-1">{{type.value}}</td>
+                            <td md-cell ng-if="pageNo == 2" class="col-sm-8">{{type.description}}</td>
+
+                            <td md-cell class="col-sm-2" style="text-align:center">
+                                <a>
+                                    <span>
+                                        <md-button class="md-icon-button">
+                                            <md-tooltip md-direction="bottom">Edit type</md-tooltip>
+                                           <!-- <i class="material-icons" ng-click="editType($index)">mode_edit</i> -->
+                                           <i class="material-icons" ng-click="showAdvanced($event, 0, type)">mode_edit</i>
+                                        </md-button>
+                                    </span>
+                                </a>
+                                <a>
+                                    <span>
+                                        <md-button class="md-icon-button" style="color:red">
+                                            <md-tooltip md-direction="bottom">Delete type</md-tooltip>
+                                           <i class="material-icons" ng-click="showConfirm($event, type.id)">delete</i>
+                                        </md-button>
+                                    </span>
+                                </a>
+                                <span ng-if="pageNo == 0">
+                                    <a>
+                                        <md-button class="md-icon-button " >
+                                             <md-tooltip md-direction="bottom">Category</md-tooltip>
+                                           <i class="material-icons"  ng-click="updatePageData(type.id,1, type.name)">question_answer</i>
+                                        </md-button>
+                                    </a>
+                                </span>
+                                <span ng-if="pageNo == 1">
+                                    <a>
+                                        <md-button class="md-icon-button ">
+                                             <md-tooltip md-direction="bottom">Intervals</md-tooltip>
+                                           <i class="material-icons" ng-click="updatePageData(type.id,2, type.name)">note_add</i>
+                                        </md-button>
+                                    </a>
+                                </span>
+                                <!--<span ng-if="pageNo == 0">-->
+
+                                    <!--<a>-->
+                                        <!--<md-menu>-->
+                                               <!--<span>-->
+                                            <!--<md-button class="md-icon-button">-->
+                                               <!--<i class="material-icons" ng-click = "$mdOpenMenu($event)">more_vert</i>-->
+                                            <!--</md-button>-->
+                                            <!--</span>-->
+                                             <!--<md-menu-content width = "2">-->
+                                                 <!--<md-menu-item>-->
+                                                    <!--<md-button ng-click="updatePageData(type.id,1, type.name)">-->
+                                                        <!--<div layout = "row">-->
+                                                            <!--<p flex>Category</p>-->
+                                                         <!--</div>-->
+                                                    <!--</md-button>-->
+                                                <!--</md-menu-item>-->
+                                             <!--</md-menu-content>-->
+                                        <!--</md-menu>-->
+                                    <!--</a>-->
+                                <!--</span>-->
+                                <!--<span ng-if="pageNo == 1">-->
+                                    <!--<a>-->
+                                        <!--<md-menu>-->
+                                               <!--<span>-->
+                                            <!--<md-button class="md-icon-button">-->
+                                               <!--<i class="material-icons" ng-click = "$mdOpenMenu($event)">more_vert</i>-->
+                                            <!--</md-button>-->
+                                            <!--</span>-->
+                                             <!--<md-menu-content width = "3">-->
+                                                 <!--<md-menu-item>-->
+                                                    <!--<md-button ng-click="updatePageData(type.id,2, type.name)">-->
+                                                        <!--<div layout = "row">-->
+                                                            <!--<p flex>Category Level</p>-->
+                                                         <!--</div>-->
+                                                    <!--</md-button>-->
+                                                <!--</md-menu-item>-->
+                                             <!--</md-menu-content>-->
+                                        <!--</md-menu>-->
+                                    <!--</a>-->
+                                <!--</span>-->
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </md-table-container>
+    </div>
+    <!--pagination -->
+    <div style="text-align:right" ng-show="isTableLoading == false">
+        <div uib-pagination
+
+             total-items="bigTotalItems"
+             ng-model="currentPage"  class="pagination-sm"
+             max-size="maxSize"  boundary-links="true"
+             rotate="false"  num-pages="numPages"
+             ng-click="pageChanged();changePage()"
+             items-per-page="itemsPerPage" >
+        </div>
+    </div>
+
+</form>
+
+
+

@@ -1,0 +1,275 @@
+<!-- Modal Add/Edit Type-->
+<md-dialog style="width:80%;">
+  <form ng-cloak>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2 ng-if="isAddBtn">Add Venue</h2>
+        <h2 ng-if="!isAddBtn">Edit Venue</h2>
+        <span flex></span>
+        <md-button class="md-icon-button">
+           <i class="material-icons" ng-click="cancel()">close</i>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+        <ng-form class="form-horizontal" role="form" name="venueEditData">
+
+          <md-input-container class="md-block col-xs-offset-1 col-xs-11">
+              <input name="place" type="text"
+                     md-maxlength="50"
+                     placeholder="Name"
+                     ng-model="formData.name"
+                     required
+              >
+              <div ng-messages="venueEditData.place.$error">
+                  <div ng-message="required">
+                      Venue Name is required
+                  </div>
+                  <div ng-message="md-maxlength">
+                      Answer does not exceed 50 characters
+                  </div>
+              </div>
+          </md-input-container>
+
+          <!-- Address --> 
+          <md-input-container class="md-block col-xs-offset-1 col-xs-11">
+              <input name="address1" type="text"
+                     md-maxlength="50"
+                     placeholder="Address Line 1"
+                     ng-model="formData.address1"
+                     required
+              >
+              <div ng-messages="venueEditData.address1.$error">
+                  <div ng-message="required">
+                      Address Line 1 is required
+                  </div>
+                  <div ng-message="md-maxlength">
+                      Answer does not exceed 50 characters
+                  </div>
+              </div>
+          </md-input-container>
+
+          <md-input-container class="md-block col-xs-offset-1 col-xs-11">
+              <input name="address2" type="text"
+                     md-maxlength="50"
+                     placeholder="Address Line 2"
+                     ng-model="formData.address2"
+              >
+              <div ng-messages="venueEditData.address2.$error">
+                  <div ng-message="md-maxlength">
+                      Answer does not exceed 50 characters
+                  </div>
+              </div>
+          </md-input-container>
+
+          <md-input-container class="md-block col-xs-offset-1 col-xs-11">
+              <input name="landmark" type="text"
+                     md-maxlength="50"
+                     placeholder="Landmark"
+                     ng-model="formData.landmark"
+              >
+              <div ng-messages="venueEditData.landmark.$error">
+                  <div ng-message="md-maxlength">
+                      Answer does not exceed 50 characters
+                  </div>
+              </div>
+          </md-input-container>
+
+          <!-- City -->
+          <md-input-container class="md-block col-sm-offset-1 col-sm-3 col-xs-offset-1 col-xs-5">
+              <input name="city" type="text"
+                     md-maxlength="50"
+                     placeholder="city"
+                     ng-model="formData.city"
+                     required
+              >
+              <div ng-messages="venueEditData.city.$error">
+                  <div ng-message="required">
+                      City is required
+                  </div>
+                  <div ng-message="md-maxlength">
+                      Answer does not exceed 50 characters
+                  </div>
+              </div>
+          </md-input-container>
+
+          <!-- State -->
+          <md-input-container class="md-block col-sm-3 col-xs-6">
+              <input name="state" type="text"
+                     md-maxlength="50"
+                     placeholder="state"
+                     ng-model="formData.state"
+                     required
+              >
+              <div ng-messages="venueEditData.state.$error">
+                  <div ng-message="required">
+                      State is required
+                  </div>
+                  <div ng-message="md-maxlength">
+                      Answer does not exceed 50 characters
+                  </div>
+              </div>
+          </md-input-container>
+
+          <!-- Country -->
+          <md-input-container class="md-block col-sm-3 col-xs-1 col-xs-5">
+              <input name="country" type="text"
+                     md-maxlength="50"
+                     placeholder="country"
+                     ng-model="formData.country"
+                     required
+              >
+              <div ng-messages="venueEditData.country.$error">
+                  <div ng-message="required">
+                      Country is required
+                  </div>
+                  <div ng-message="md-maxlength">
+                      Answer does not exceed 50 characters
+                  </div>
+              </div>
+          </md-input-container>
+
+          <!-- Zip/Post code -->
+          <md-input-container class="md-block col-sm-2 col-xs-6">
+              <input name="zip" type="text"
+                     md-maxlength="50"
+                     placeholder="Zip Code"
+                     ng-model="formData.post_code"
+                     required
+              >
+              <div ng-messages="venueEditData.zip.$error">
+                  <div ng-message="required">
+                      Zipcode is required
+                  </div>
+                  <div ng-message="md-maxlength">
+                      Answer does not exceed 50 characters
+                  </div>
+              </div>
+          </md-input-container>
+
+          <!-- Phone -->
+          <md-input-container class="md-block col-sm-offset-1 col-sm-3 col-xs-1 col-xs-5">
+              <input name="phone" type="text"
+                     md-maxlength="10"
+                     placeholder="Primary Contact Number"
+                     ng-model="formData.primary_contact"
+              >
+              <div ng-messages="venueEditData.phone.$error">
+                  <!-- <div ng-message="required">
+                      Primary Contact Number is required
+                  </div> -->
+                  <div ng-message="md-maxlength">
+                      Answer does not exceed 10 characters
+                  </div>
+              </div>
+          </md-input-container>
+
+           <!-- Contact Mail -->
+          <md-input-container class="md-block col-sm-4 col-xs-6">
+              <input name="email" type="text"
+                     md-maxlength="50"
+                     placeholder="Contact Mail"
+                     ng-model="formData.contact_mail"
+              >
+              <div ng-messages="venueEditData.email.$error">
+                  <!-- <div ng-message="required">
+                      Contact email is required
+                  </div> -->
+                  <div ng-message="md-maxlength">
+                      Answer does not exceed 50 characters
+                  </div>
+              </div>
+          </md-input-container>
+
+          <!-- Website -->
+          <md-input-container class="md-block col-sm-4 col-xs-1 col-xs-11">
+              <input name="website" type="text"
+                     md-maxlength="50"
+                     placeholder="Website"
+                     ng-model="formData.website"
+              >
+              <div ng-messages="venueEditData.website.$error">
+                  <!-- <div ng-message="required">
+                      Website is required
+                  </div> -->
+                  <div ng-message="md-maxlength">
+                      Answer does not exceed 50 characters
+                  </div>
+              </div>
+          </md-input-container>
+           <div class="clearfix"></div>
+          <!-- Category Level -->
+          <div ng-repeat="choice in formData.choices track by $index">
+              <!-- Select Type -->
+              <md-input-container class="md-block col-sm-offset-1 col-sm-3 col-xs-12">
+                  <md-select placeholder="Select Type" ng-model="choice.selectedType" ng-change="reset($index, 1)"  style="min-width: 200px;">
+                      <md-option ng-if="types.length == 0" ng-value="">No Types available</md-option>
+                      <md-option ng-repeat="type in types" ng-value="type.id">{{type.name}}</md-option>
+                  </md-select>
+              </md-input-container>
+
+              <!-- Select Category -->
+              <md-input-container class="md-block col-sm-3 col-xs-12">
+                  <md-select placeholder="Select Category" ng-model="choice.selectedCategory" ng-disabled="!!!choice.selectedType" ng-change="reset($index, 0)" style="min-width: 200px;">
+                      <md-option ng-if="categories.length == 0" ng-value="">No categories available</md-option>
+                      <md-option ng-repeat="category in categories" ng-if = "choice.selectedType == category.type" ng-value="category.id">{{category.name}}</md-option>
+                  </md-select>
+              </md-input-container>
+
+                    <!-- Select Category Level -->
+                    <md-input-container class="md-block col-sm-3 col-xs-12">
+                        <md-select placeholder="Select Category Level" ng-model="choice.selectedCatLevel"
+                                   ng-change="getCatLevelId($index)" ng-disabled="!!!choice.selectedCategory"
+                                   style="min-width: 200px;">
+                            <md-option ng-if="cat_levels.length == 0" ng-value="">No category levels available
+                            </md-option>
+                            <md-option ng-repeat="level in cat_levels" ng-if="choice.selectedCategory == level.category"
+                                       ng-value="level.id">{{level.description}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                    <md-input-container class="md-block col-sm-2 col-xs-12">
+                        <md-button class="md-icon-button" ng-if="formData.choices.length == $index + 1">
+                            <i class="material-icons" ng-click="addSelectCat($index)">add_circle_outline</i>
+                        </md-button>
+                        <md-button class="md-icon-button" ng-if="$index != 0 || formData.choices.length>1">
+                            <i class="material-icons" ng-click="removeSelectCat($index)">remove_circle_outline</i>
+                        </md-button>
+                    </md-input-container>
+                </div>
+                <!--Geo-location-->
+                <md-input-container class="md-block col-sm-4  col-xs-offset-1 col-xs-11">
+
+                    <input name="map" type="text"
+                           placeholder="Enter location"
+                           id="source_point"
+                           ng-model="formData.map"
+                           ng-change="displayMap()"
+                    >
+                    <div class="form-group hide">
+                        <label for="location_coordinates"><h3>Cordinates with latitude and longitude</h3></label>
+                        <hr>
+                        <p id="location_coordinates"></p>
+                    </div>
+                    <div class="form-group">
+                        <input type="hidden" id="src_lat" name="src_lat" placeholder="latitude">
+                        <input type="hidden" id="src_long" name="src_long" placeholder="longitude">
+                    </div>
+                </md-input-container>
+                <md-input-container class="md-block col-sm-offset-1 col-sm-5 col-xs-1 col-xs-5">
+                    <div id="source_map" style="width: 500px; height: 300px ;position: relative; overflow: hidden;"></div>
+                    <style type="text/css">
+                        #source_map {display:none;}
+                    </style>
+                </md-input-container>
+
+              <div style="text-align:center">
+                  <md-button class="md-raised md-primary" ng-disabled="venueEditData.$invalid"
+                  ng-click="submitData()"> Submit
+                  </md-button>
+              </div>
+          </ng-form>
+    </md-dialog-content>
+  </form>
+</md-dialog>

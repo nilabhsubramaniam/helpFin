@@ -1,0 +1,88 @@
+<!-- Modal Add/Edit Type-->
+<md-dialog style="width:80%;">
+    <form ng-cloak>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>opening Hour</h2>
+                <span flex></span>
+                <md-button class="md-icon-button">
+                    <i class="material-icons" ng-click="cancel()">close</i>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <md-toolbar class="md-table-toolbar alternate">
+                <md-table-container>
+                    <table data-md-table>
+                        <thead md-head>
+                        <tr md-row>
+                            <th md-column  class="col-sm-1"><span style="color:white">Day</span>
+                            </th>
+                            <th md-column  class="col-sm-3"><span style="color:white">Start time</span>
+                            </th>
+                            <th md-column  class="col-sm-2"><span style="color:white">Break start Time</span>
+                            </th>
+                            <th md-column data-md-numeric  class="col-sm-3">
+                                <span style="color:white">Break end time</span></th>
+                            <th md-column data-md-numeric class="col-sm-3"><span
+                                    style="color:white">End Time</span></th>
+                            <th md-column class="col-sm-1">
+                                <span style="color:white">Action</span>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody md-body style="background-color:#ffffff">
+                        <tr md-row ng-if="openingHours.length == 0">
+                            <td md-cell><b>No data available</b></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr md-row data-ng-repeat="openingHour in openingHours  ">
+                            <td md-cell  class="col-sm-1">{{openingHour.day}}</td>
+                            <td md-cell  class="col-sm-3">
+                                <span>
+                                    <input mdc-datetime-picker="" date="false" time="true" type="text"  short-time="true"
+                                           placeholder="Time" min-date="minDate" format="hh:mm a" ng-model="openingHour.start_time" class=" md-input"
+                                          >
+                                </span>
+                            </td>
+                            <td md-cell  class="col-sm-3">
+                                <span>
+                                     <input mdc-datetime-picker="" date="false" time="true" type="text"  short-time="true"
+                                            placeholder="Time" min-date="minDate" format="hh:mm a" ng-model="openingHour.break_start_time" class=" md-input"
+                                            readonly="readonly">
+                                </span>
+
+                            </td>
+                            <td md-cell  class="col-sm-3">
+                                <span>
+                                    <input mdc-datetime-picker="" date="false" time="true" type="text"  short-time="true"
+                                           placeholder="Time" min-date="minDate" format="hh:mm a" ng-model="openingHour.break_end_time" class=" md-input"
+                                           readonly="readonly">
+                                </span>
+                            </td>
+                            <td md-cell  class="col-sm-3">
+                                <span>
+                                     <input mdc-datetime-picker="" date="false" time="true" type="text"  short-time="true"
+                                            placeholder="Time" min-date="minDate" format="hh:mm a" ng-model="openingHour.end_time" class=" md-input"
+                                            readonly="readonly">
+                                </span>
+                            </td>
+                            <td md-cell  class="col-sm-1">
+                                <a>
+                                    <span>
+                                        <md-button class="md-icon-button">
+                                            <i class="material-icons" ng-click="updateEditHours($index,  openingHour.id)">subdirectory_arrow_right</i>
+                                        </md-button>
+                                    </span>
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </md-table-container>
+            </md-toolbar>
+        </md-dialog-content>
+    </form>
+</md-dialog>
